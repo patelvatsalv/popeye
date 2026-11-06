@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Popeye</title>
+  <meta name="description" content="Popeye: Hand Pose and Contact Force Estimation from Forearm Surface Imaging">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://patelvatsalv.github.io/popeye/">
+  <meta property="og:title" content="Popeye: Hand Pose and Contact Force Estimation from Forearm Surface Imaging">
+  <meta property="og:description" content="Popeye estimates hand pose and per-fingertip contact force by imaging the forearm surface, without external cameras or equipment on the hand.">
+  <meta property="og:image" content="https://patelvatsalv.github.io/popeye/images/preview.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="images/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <video class="hero-video" src="videos/hero.mp4" poster="images/hero.jpg" autoplay muted loop playsinline></video>
+    <div class="hero-text">
+      <h1><span class="pink">Popeye:</span> Hand Pose and Contact Force Estimation from Forearm Surface Imaging</h1>
+      <p class="authors">Vatsal V. Patel, Michael F. Fernandez, Hugh M. Herr, Pulkit Agrawal</p>
+      <p class="affiliation">Massachusetts Institute of Technology</p>
+    </div>
+    <p class="hero-note">Fingertip sensors for ground truth force labels <em>only.</em></p>
+  </header>
+
+  <main>
+    <section class="split large">
+      <img src="images/splash.png" width="1500" height="1019" alt="The Popeye device on a forearm with its four camera views, estimating the pose and fingertip contact force of a hand hidden inside a bin">
+      <div class="statement">
+        <p><span class="pink">Popeye</span> estimates hand pose and per-fingertip contact force</p>
+        <p class="red">without:</p>
+        <p class="yellow">(1) any external cameras or tracking, or</p>
+        <p class="blue">(2) any equipment on the hand itself</p>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="statement">
+        <p>Instead...</p>
+        <p><span class="pink">Popeye</span> uses cameras to look at the forearm surface wrapped in a textured bandage</p>
+      </div>
+      <video data-src="videos/banana.mp4" poster="images/banana.jpg" style="aspect-ratio: 1006 / 1028" preload="none" muted loop playsinline></video>
+    </section>
+
+    <section class="split">
+      <video data-src="videos/features.mp4" poster="images/features.jpg" style="aspect-ratio: 790 / 684" preload="none" muted loop playsinline></video>
+      <div class="statement">
+        <p>Features are extracted from the <span class="rose">four</span> camera images with <span class="purple">DoG Band-pass</span> + <span class="green">Optical Flow</span></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="split">
+        <div class="statement">
+          <p>The forearm camera <span class="sky">image features</span>, along with <span class="imu">IMU</span> outputs, pass through a <span class="violet">3-layer MLP</span> to predict <em class="coral">finger + wrist pose</em> and <em class="coral">fingertip contact force.</em></p>
+        </div>
+        <video data-src="videos/cloth.mp4" poster="images/cloth.jpg" style="aspect-ratio: 830 / 1000" preload="none" muted loop playsinline></video>
+      </div>
+      <img class="pipeline" src="images/pipeline.png" width="2500" height="1162" loading="lazy" alt="Popeye pipeline: forearm camera images and IMU pass through feature extraction and a 3-layer MLP to hand, wrist and contact force outputs">
+    </section>
+
+    <section>
+      <div class="statement wide">
+        <p><span class="pink">Popeye</span> was tested across 3 participants and predicts finger pose to 9.27° geodesic error and tracks force magnitude at r&nbsp;=&nbsp;0.725</p>
+      </div>
+      <div id="grid">
+        <video data-src="videos/grid.mp4" poster="images/grid.jpg" style="aspect-ratio: 16 / 9" preload="none" muted loop playsinline></video>
+        <div class="notes">
+          <p>Fingertip sensors for ground truth force labels <em>only.</em></p>
+          <p>Ground truth fingertip force sensors removed in these sessions as they would be at deployment.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="statement wide">
+        <p><span class="pink">Popeye</span> can be trained with just <span class="teal">3 mins</span> of data per user for wrist and grasp pose + force, and ~25 mins for per-finger outputs.</p>
+      </div>
+      <video data-src="videos/demo.mp4" poster="images/demo.jpg" style="aspect-ratio: 16 / 9" preload="none" muted loop playsinline></video>
+    </section>
+
+    <section>
+      <p class="caption">Predicted and ground-truth hand state on a test segment from Participant 3, with fingertip force in conductance (mS).</p>
+      <div class="pair">
+        <img src="images/pose.png" width="1240" height="1173" loading="lazy" alt="Predicted and ground-truth thumb, ring and wrist joint angles over a 30 second test segment">
+        <img src="images/force.png" width="1240" height="1173" loading="lazy" alt="Predicted and ground-truth fingertip force over the same test segment">
+      </div>
+    </section>
+
+    <section class="pair">
+      <figure>
+        <figcaption>
+          <h2>Per Finger</h2>
+          <p class="caption">Evaluation metrics per finger, averaged over participants.</p>
+        </figcaption>
+        <table>
+          <thead>
+            <tr><th></th><th colspan="2">Pose error (°) ↓</th><th colspan="2">Contact AP ↑</th><th>Force r ↑</th></tr>
+            <tr><th>Finger</th><th>Ours</th><th>Const.</th><th>Ours</th><th>Chance</th><th>Ours</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Thumb</td><td class="pose">10.43</td><td class="base">13.88</td><td class="force">0.901</td><td class="base">51.6%</td><td class="force">0.643</td></tr>
+            <tr><td>Index</td><td class="pose">8.62</td><td class="base">12.16</td><td class="force">0.723</td><td class="base">23.8%</td><td class="force">0.690</td></tr>
+            <tr><td>Middle</td><td class="pose">8.79</td><td class="base">11.92</td><td class="force">0.866</td><td class="base">38.8%</td><td class="force">0.707</td></tr>
+            <tr><td>Ring</td><td class="pose">8.31</td><td class="base">12.04</td><td class="force">0.839</td><td class="base">24.4%</td><td class="force">0.763</td></tr>
+            <tr><td>Pinky</td><td class="pose">10.21</td><td class="base">14.24</td><td class="force">0.785</td><td class="base">8.4%</td><td class="force">0.820</td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>Input Ablations</h2>
+          <p class="caption">Effect of removing each input, averaged over participants.</p>
+        </figcaption>
+        <table>
+          <thead>
+            <tr><th>Ablated</th><th>Dim</th><th>Finger (°) ↓</th><th>Wrist (°) ↓</th><th>AP ↑</th><th>r ↑</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>− Appearance</td><td>38</td><td>+1.69</td><td>+5.10</td><td>−0.193</td><td>−0.183</td></tr>
+            <tr><td>− Motion</td><td>134</td><td>+0.35</td><td>+1.62</td><td>−0.020</td><td>−0.011</td></tr>
+            <tr><td>− IMU</td><td>160</td><td>+0.33</td><td>+2.82</td><td>−0.010</td><td>−0.009</td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </section>
+  </main>
+
+  <script>
+    const clips = new IntersectionObserver(entries => {
+      for (const { target, isIntersecting } of entries) {
+        if (isIntersecting) {
+          if (!target.src) target.src = target.dataset.src;
+          target.play().catch(() => {});
+        } else {
+          target.pause();
+        }
+      }
+    }, { rootMargin: "400px 0px" });
+    document.querySelectorAll("video[data-src]").forEach(video => clips.observe(video));
+
+    const grid = document.getElementById("grid");
+    const clip = grid.querySelector("video");
+    clip.addEventListener("timeupdate", () => grid.classList.toggle("removed", clip.currentTime >= 20));
+  </script>
+</body>
+</html>
